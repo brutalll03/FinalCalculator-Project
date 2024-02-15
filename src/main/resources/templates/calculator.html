@@ -1,0 +1,160 @@
+<!-- src/main/resources/templates/calculator.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e6e6e6; /* Background color for the whole page */
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      background-color: #f2f2f2; /* Light gray background color */
+      padding: 20px;
+      margin: 0 auto; /* Center the container */
+      max-width: 400px; /* Adjust width as needed */
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    select {
+      height: 40px; /* Adjust this value as needed */
+    }
+
+    button {
+      padding: 8px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    p {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history-table th, .history-table td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    .history-table th {
+      background-color: #f2f2f2;
+    }
+
+    .history-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .history-table tr:hover {
+      background-color: #dddddd;
+    }
+
+    .logout-btn-container {
+      position: absolute;
+      top: 50px;
+      right: 300px;
+    }
+
+    .logout-btn-container button {
+      padding: 15px 25px;
+      background-color: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Calculator</h1>
+
+  <!-- Logout button -->
+  <div class="logout-btn-container">
+    <form action="/api/logout" method="get">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+
+  <form th:action="@{/api/calculate}" th:object="${calculation}" method="post">
+    <label for="num1">Number 1:</label>
+    <input type="number" id="num1" name="num1" th:field="*{num1}" required>
+
+    <label for="num2">Number 2:</label>
+    <input type="number" id="num2" name="num2" th:field="*{num2}" required>
+
+    <label for="operation">Operation:</label>
+    <select id="operation" name="operation">
+      <option value="add">Addition</option>
+      <option value="subtract">Subtraction</option>
+      <option value="multiply">Multiplication</option>
+      <option value="divide">Division</option>
+      <option value="modulus">Modulus</option>
+    </select>
+
+    <button type="submit">Calculate</button>
+  </form>
+
+  <p th:if="${message}" th:text="${message}"></p>
+
+
+  <h2>Calculation History</h2>
+  <table class="history-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Number 1</th>
+      <th>Number 2</th>
+      <th>Operation</th>
+      <th>Result</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through calculationHistory -->
+    <tr th:each="calculation : ${calculationHistory}">
+      <td th:text="${calculation.id}"></td>
+      <td th:text="${calculation.num1}"></td>
+      <td th:text="${calculation.num2}"></td>
+      <td th:text="${calculation.operation}"></td>
+      <td th:text="${calculation.result}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

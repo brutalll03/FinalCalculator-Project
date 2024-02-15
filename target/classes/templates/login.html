@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center; /* Center content horizontally */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center items horizontally */
+        }
+        .forms {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Distribute forms evenly */
+            width: 100%; /* Take up full width of container */
+            max-width: 600px; /* Limit maximum width of forms */
+            margin-top: 20px; /* Add margin between forms and h1 */
+        }
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: calc(50% - 10px); /* Adjust width for two forms */
+        }
+        h1 {
+            margin-top: 0; /* Remove default margin */
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0; /* Remove default margin */
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="email"],
+        input[type="password"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: calc(100% - 22px); /* Adjusted width to accommodate padding and border */
+            margin-bottom: 10px;
+        }
+        button[type="submit"] {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 5px;
+            text-align: center;
+            font-size: small;
+        }
+        /* Add margin between registration and login forms */
+        .register-form {
+            margin-left: 20px; /* Add margin to the left of the registration form */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Let's calculate :)</h1>
+    <div class="forms">
+        <form action="/api/login" method="post">
+            <h2>Login</h2>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <button type="submit">Login</button>
+            <!-- Display error message if login fails -->
+            <p class="error-message" th:if="${param.error != null}">Invalid email address.</p>
+        </form>
+
+        <!-- New section for registration -->
+        <form action="/api/register" method="post" class="register-form"> <!-- Add register-form class -->
+            <h2>Register</h2>
+            <label for="registerEmail">Email:</label>
+            <input type="email" id="registerEmail" name="email" required>
+            <button type="submit">Register</button>
+            <!-- Display error message if registration fails due to existing email -->
+            <p class="error-message" th:if="${param.error == 'exists'}">Email address already registered.</p>
+        </form>
+    </div>
+</div>
+</body>
+</html>
